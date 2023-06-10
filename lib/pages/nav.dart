@@ -37,7 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
               gap: 8,
               activeColor: Colors.white,
               tabBackgroundColor:
-                  Color.fromARGB(255, 226, 214, 214).withOpacity(0.5),
+                  const Color.fromARGB(255, 226, 214, 214).withOpacity(0.5),
               backgroundColor: Colors.green,
               color: Colors.white,
               padding: const EdgeInsets.all(12),

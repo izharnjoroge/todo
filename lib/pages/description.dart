@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// more details on the fetched task.
+
 Widget description(context, title, completed) {
   return Scaffold(
     appBar: AppBar(

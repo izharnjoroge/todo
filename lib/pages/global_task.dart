@@ -3,8 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tasks/pages/description.dart';
 
+//fetch data from url
+
 class GlobalTasks extends StatefulWidget {
-  const GlobalTasks({Key? key});
+  const GlobalTasks({
+    super.key,
+  });
 
   @override
   State<GlobalTasks> createState() => _GlobalTasksState();
@@ -12,6 +16,7 @@ class GlobalTasks extends StatefulWidget {
 
 class _GlobalTasksState extends State<GlobalTasks> {
   final List<Map<String, dynamic>> _allTasks = [];
+  // ignore: prefer_typing_uninitialized_variables
   var jsondata;
   List<Map<String, dynamic>> _newTasks = [];
   bool isLoading = true;
@@ -43,6 +48,7 @@ class _GlobalTasksState extends State<GlobalTasks> {
     getTasks();
   }
 
+  // search function
   void updateTask(String val) {
     setState(() {
       if (val.isEmpty) {
@@ -80,6 +86,7 @@ class _GlobalTasksState extends State<GlobalTasks> {
           ),
           elevation: 0.00,
           backgroundColor: const Color.fromARGB(255, 82, 219, 89),
+          automaticallyImplyLeading: false,
         ),
         body: Column(
           children: [
@@ -146,8 +153,9 @@ class _GlobalTasksState extends State<GlobalTasks> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                tileColor: Color.fromARGB(255, 226, 214, 214)
-                                    .withOpacity(0.5),
+                                tileColor:
+                                    const Color.fromARGB(255, 226, 214, 214)
+                                        .withOpacity(0.5),
                                 selected: _newTasks[index]["completed"],
                                 trailing: _newTasks[index]["completed"]
                                     ? const Icon(Icons.done)

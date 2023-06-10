@@ -31,6 +31,7 @@ class _LogOutState extends State<LogOut> {
           ),
           elevation: 0.00,
           backgroundColor: const Color.fromARGB(255, 82, 219, 89),
+          automaticallyImplyLeading: false,
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 200),

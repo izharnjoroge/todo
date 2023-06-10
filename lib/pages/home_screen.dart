@@ -39,7 +39,6 @@ class _MyTasksState extends State<MyTasks> {
 
   void saveNewTask() {
     if (_controller.text.isEmpty) {
-      // _controller has no value, so pop the context
       Navigator.of(context).pop();
       return;
     }
@@ -90,6 +89,7 @@ class _MyTasksState extends State<MyTasks> {
           ),
           elevation: 0.00,
           backgroundColor: const Color.fromARGB(255, 82, 219, 89),
+          automaticallyImplyLeading: false,
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: createNewTask,

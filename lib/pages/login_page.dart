@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tasks/pages/register_page.dart';
 import 'package:tasks/services/auth_service.dart';
 
-import '../components/buttons.dart';
-import '../components/text_fields.dart';
-import '../components/text_fields2.dart';
-import '../components/tiles.dart';
+import '../utils/buttons.dart';
+import '../utils/text_fields.dart';
+import '../utils/text_fields2.dart';
+import '../utils/tiles.dart';
 import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,16 +26,15 @@ class _LoginPageState extends State<LoginPage> {
 
   void signUser() async {
     final form = formKey.currentState;
-
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
     if (form!.validate()) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
       try {
         if (passwordController.text.isEmpty) {
           Navigator.pop(context);
@@ -45,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             email: emailController.text,
             password: passwordController.text,
           );
+          showSuccessDialog("Success.");
         }
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
@@ -70,6 +70,29 @@ class _LoginPageState extends State<LoginPage> {
         });
   }
 
+  void showSuccessDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          content: Text(
+            message,
+            style: const TextStyle(color: Colors.green),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +101,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Form(
             key: formKey,
+            //for validation from the TextFields class
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(25.0),

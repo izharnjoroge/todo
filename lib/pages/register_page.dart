@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../components/buttons.dart';
-import '../components/text_fields.dart';
+import '../utils/buttons.dart';
+import '../utils/text_fields.dart';
 
-import '../components/text_fields2.dart';
-import '../components/tiles.dart';
+import '../utils/text_fields2.dart';
+import '../utils/tiles.dart';
 import '../services/auth_service.dart';
 import 'login_page.dart';
+import 'nav.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({
@@ -26,31 +27,28 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void signupUser() async {
     final form = formKey.currentState;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
 
     if (form!.validate()) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
       try {
-        if (passwordController.text == confirmpasswordController.text &&
-            passwordController.text.isNotEmpty) {
+        if (confirmpasswordController.text != passwordController.text) {
+          Navigator.pop(context);
+          showErrorMessage("Passwords do not match");
+        } else {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text,
             password: passwordController.text,
           );
-          // User registration successful
+          showSuccessDialog("Success.");
 
-          showSuccessDialog(
-              "You have been registered, please return to the Login Page.");
-        } else {
-          // Passwords do not match
-          Navigator.pop(context);
-          showErrorMessage("Passwords do not match!");
+          // Navigate to the NavigationPage after successful registration
         }
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
@@ -64,32 +62,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void showErrorMessage(String message) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          content: Text(
-            message,
-            style: const TextStyle(color: Colors.red),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text(
+              message,
+              style: const TextStyle(color: Colors.red),
             ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
+          );
+        });
   }
 
   void showSuccessDialog(String message) {
@@ -106,11 +88,11 @@ class _RegisterPageState extends State<RegisterPage> {
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                dispose();
                 Navigator.pop(context);
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const NavigationPage()),
                 );
               },
             ),
@@ -128,6 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Center(
           child: Form(
             key: formKey,
+            //for validation from the TextFields class
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
