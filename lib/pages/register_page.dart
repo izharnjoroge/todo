@@ -50,8 +50,6 @@ class _RegisterPageState extends State<RegisterPage> {
             password: passwordController.text.trim(),
           );
           showSuccessDialog("Success.");
-
-          // Navigate to the NavigationPage after successful registration
         }
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
@@ -61,7 +59,6 @@ class _RegisterPageState extends State<RegisterPage> {
         showErrorMessage(e.toString());
       }
     }
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
   void showErrorMessage(String message) {
@@ -93,6 +90,8 @@ class _RegisterPageState extends State<RegisterPage> {
               child: const Text('OK'),
               onPressed: () {
                 Navigator.pop(context);
+                // Navigate to the NavigationPage after successful registration
+                navigatorKey.currentState!.popUntil((route) => route.isFirst);
               },
             ),
           ],

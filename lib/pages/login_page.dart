@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage> {
         showErrorMessage(e.toString());
       }
     }
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
   void showErrorMessage(String message) {
@@ -87,6 +86,8 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text('OK'),
               onPressed: () {
                 Navigator.pop(context);
+                // Navigate to the NavigationPage after successful registration
+                navigatorKey.currentState!.popUntil((route) => route.isFirst);
               },
             ),
           ],
