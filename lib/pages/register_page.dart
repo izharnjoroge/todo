@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../utils/buttons.dart';
 import '../utils/text_fields.dart';
 
@@ -25,8 +26,9 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isObscured = true;
   final formKey = GlobalKey<FormState>();
 
-  void signupUser() async {
+  Future signupUser() async {
     final form = formKey.currentState;
+
     showDialog(
       context: context,
       builder: (context) {
@@ -38,13 +40,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (form!.validate()) {
       try {
-        if (confirmpasswordController.text != passwordController.text) {
+        if (confirmpasswordController.text.trim() !=
+            passwordController.text.trim()) {
           Navigator.pop(context);
           showErrorMessage("Passwords do not match");
         } else {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
           );
           showSuccessDialog("Success.");
 
@@ -58,6 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
         showErrorMessage(e.toString());
       }
     }
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
   void showErrorMessage(String message) {
@@ -89,11 +93,6 @@ class _RegisterPageState extends State<RegisterPage> {
               child: const Text('OK'),
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const NavigationPage()),
-                );
               },
             ),
           ],

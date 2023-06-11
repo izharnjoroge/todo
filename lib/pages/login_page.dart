@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tasks/pages/register_page.dart';
 import 'package:tasks/services/auth_service.dart';
 
+import '../main.dart';
 import '../utils/buttons.dart';
 import '../utils/text_fields.dart';
 import '../utils/text_fields2.dart';
@@ -24,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  void signUser() async {
+  Future signUser() async {
     final form = formKey.currentState;
     showDialog(
       context: context,
@@ -41,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
           showErrorMessage("Password is required");
         } else {
           await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
           );
           showSuccessDialog("Success.");
         }
@@ -54,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
         showErrorMessage(e.toString());
       }
     }
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
   void showErrorMessage(String message) {
